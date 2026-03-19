@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="calcular()">
+
+    <h2>Lista de Compras Eletrodomésticos</h2>
+
+    <table id="tabela" style="width:100%">
+        <tr>
+            <th style="width:70%">Produtos</th>
+            <th>Quantidade</th> 
+            <th>Valor Unitário</th>
+        </tr>
+
+        <tr>
+            <td>Fogão</td>
+            <td class="qtd">1</td>
+            <td class="preco">R$ 1.154,00</td>
+        </tr>
+
+        <tr>
+            <td>Geladeira</td>
+            <td class="qtd">1</td>
+            <td class="preco">R$ 2.784,00</td>
+        </tr>
+
+        <tr>
+            <td>Air Fryer</td>
+            <td class="qtd">1</td>
+            <td class="preco">R$ 475,00</td>
+        </tr>
+
+        <tr>
+            <td>Microondas</td>
+            <td class="qtd">1</td>
+            <td class="preco">R$ 550,00</td>
+        </tr>
+
+        <tr>
+            <td>Máquina de Lavar Roupas</td>
+            <td class="qtd">1</td>
+            <td class="preco">R$ 1.675,00</td>
+        </tr>
+
+        <tr>
+            <td><b>VALOR TOTAL DA COMPRA</b></td>
+            <td colspan="2" id="totalGeral" style="font-weight: bold; color: blue;">R$ 0,00</td>
+        </tr>
+    </table>
+
+    <script>
+        function calcular() {
+            let qtds = document.querySelectorAll(".qtd");
+            let precos = document.querySelectorAll(".preco");
+            let totalGeral = 0;
+
+            for (let i = 0; i < qtds.length; i++) {
+                // 1. Pega o texto: "R$ 1.154,00"
+                let textoPreco = precos[i].textContent;
+
+                // 2. Remove o "R$", pontos de milhar e troca vírgula por ponto
+                // Usamos Regex para limpar tudo que não for número ou vírgula/ponto
+                let valorLimpo = textoPreco.replace(/[R$\s.]/g, "").replace(",", ".");
+                
+                let quantidade = parseFloat(qtds[i].textContent);
+                let precoUnitario = parseFloat(valorLimpo);
+
+                // 3. Soma ao total: (Quantidade * Preço)
+                totalGeral += (quantidade * precoUnitario);
+            }
+
+            // 4. Formata o resultado de volta para a moeda brasileira
+            document.getElementById("totalGeral").textContent = totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+    </script>
+</body>
+</html>
