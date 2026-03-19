@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        /* CSS - O visual da calculadora */
+        :root {
+            background: linear-gradient(320deg, #eb92be, #ffef78, #63c9b4);
+            --display-bg: #ffffff;
+            --text-color: #000000;
+            --btn-num: #ffffff;
+            --btn-op: #d72880;
+            --btn-hover: #505050;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--bg-body);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .calculator {
+            background-color: var(--bg-calc);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 300px;
+        }
+
+        #display {
+            width: 100%;
+            height: 60px;
+            background-color: var(--display-bg);
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            text-align: right;
+            padding: 10px;
+            font-size: 2rem;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 60px;
+            border-radius: 8px;
+            border: none;
+            background-color: var(--btn-num);
+            color: rgb(0, 0, 0);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .operator {
+            background-color: var(--btn-op);
+        }
+
+        .operator:hover {
+            background-color: #e68600;
+        }
+
+        .equals {
+            background-color: #b62485;
+            grid-column: span 2;
+        }
+
+        .equals:hover {
+            background-color: #27ae60;
+        }
+
+        .clear {
+            background-color: #ffffff;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <input type="text" id="display" disabled value="0">
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendOperator('/')">÷</button>
+            <button class="operator" onclick="appendOperator('*')">×</button>
+            
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button class="operator" onclick="appendOperator('-')">-</button>
+            
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button class="operator" onclick="appendOperator('+')">+</button>
+            
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="appendNumber('.')">.</button>
+            
+            <button onclick="appendNumber('0')">0</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        /* JavaScript - A lógica de funcionamento */
+        const display = document.getElementById('display');
+        let currentInput = '0';
+
+        function updateDisplay() {
+            display.value = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            const lastChar = currentInput.slice(-1);
+            if (['+', '-', '*', '/'].includes(lastChar)) {
+                currentInput = currentInput.slice(0, -1) + op;
+            } else {
+                currentInput += op;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                // eval() processa a string matemática. 
+                // Para projetos reais e complexos, recomenda-se usar um parser próprio por segurança.
+                currentInput = eval(currentInput).toString();
+            } catch (error) {
+                currentInput = "Erro";
+            }
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
